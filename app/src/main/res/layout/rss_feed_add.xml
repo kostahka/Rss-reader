@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/element_background">
+
+   <Button
+       android:id="@+id/rss_feed_file_button"
+       android:text="@string/rss_get_file"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:background="@drawable/button_background"
+       android:layout_margin="10dp"
+       android:paddingHorizontal="40dp"
+       android:theme="@style/Theme.AppCompat.OrangeButton"/>
+
+    <Button
+        android:id="@+id/rss_feed_link_button"
+        android:text="@string/rss_get_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:layout_margin="10dp"
+        android:theme="@style/Theme.AppCompat.OrangeButton"/>
+
+</LinearLayout>
