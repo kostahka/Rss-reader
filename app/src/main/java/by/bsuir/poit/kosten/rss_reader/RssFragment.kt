@@ -9,17 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import by.bsuir.poit.kosten.rss_reader.dialog.DateDialog
+import java.text.SimpleDateFormat
 import java.util.*
 
 
 private const val ARG_RSS_FEED = "rss_feed"
 
-class RssFragment : Fragment() {
+class RssFragment : Fragment(), DateDialog.Callbacks{
 
     interface Callbacks{
         fun onNewsSelected(link: String)
@@ -30,6 +33,10 @@ class RssFragment : Fragment() {
     private lateinit var rssListView: ListView
     private lateinit var rssSearchEditText: EditText
     private var adapter = RssAdapter(emptyList())
+
+    private lateinit var datePickButton: Button
+    private lateinit var dateUnpickButton: Button
+    private var filterDate:Date? = null
 
     companion object {
         fun newInstance(rssFeedId: UUID):RssFragment{
@@ -67,6 +74,18 @@ class RssFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_rss, container, false)
+
+        datePickButton = view.findViewById(R.id.date_pick_button)
+        datePickButton.setOnClickListener {
+            DateDialog(this).show(parentFragmentManager, "Date_picker")
+        }
+
+        dateUnpickButton = view.findViewById(R.id.date_unpick_button)
+        dateUnpickButton.setOnClickListener {
+            filterDate = null
+            adapter.setDateFilter(null)
+            datePickButton.setText(R.string.date_pick)
+        }
 
         rssListView = view.findViewById(R.id.rss_list_view)
         rssListView.adapter = adapter
@@ -108,6 +127,7 @@ class RssFragment : Fragment() {
     private inner class RssAdapter(private var items: List<RssItem>) : BaseAdapter(){
         var filteredItems = items;
         private var filter:String = ""
+        private var dateFilter: Date? = null
         override fun getCount(): Int {
             return filteredItems.size
         }
@@ -140,10 +160,26 @@ class RssFragment : Fragment() {
             else
                 items.filter { it.title.contains(filter, true) }
 
+            val calendar1 = Calendar.getInstance()
+            val calendar2 = Calendar.getInstance()
+            if (dateFilter != null){
+                calendar1.time = dateFilter
+                filteredItems = filteredItems.filter { calendar2.time = it.pubDate
+                    calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH)
+                            && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)}
+            }
+
         }
 
         fun setFilter(filter:String){
             this.filter = filter
+            filter()
+
+            notifyDataSetChanged()
+        }
+
+        fun setDateFilter(date:Date?){
+            this.dateFilter = date
             filter()
 
             notifyDataSetChanged()
@@ -156,6 +192,13 @@ class RssFragment : Fragment() {
             notifyDataSetChanged()
         }
 
+    }
+
+    override fun onDateSelected(date: Date) {
+        filterDate = date
+        val sdf = SimpleDateFormat("MM/dd - hh:mm:ss")
+        datePickButton.text = sdf.format(date)
+        adapter.setDateFilter(date)
     }
 
 }

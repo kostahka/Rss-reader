@@ -19,6 +19,26 @@
         android:padding="10dp"
         android:layout_margin="10dp"/>
 
+    <Button
+        android:id="@+id/date_pick_button"
+        android:text="@string/date_pick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:layout_margin="10dp"
+        android:paddingHorizontal="40dp"
+        android:theme="@style/Theme.AppCompat.OrangeButton"/>
+
+    <Button
+        android:id="@+id/date_unpick_button"
+        android:text="@string/date_unpick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:layout_margin="10dp"
+        android:paddingHorizontal="40dp"
+        android:theme="@style/Theme.AppCompat.OrangeButton"/>
+
     <ListView
         android:id="@+id/rss_list_view"
         android:layout_width="match_parent"

@@ -11,4 +11,6 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
+    <string name="date_pick">Pick date</string>
+    <string name="date_unpick">Unpick date</string>
 </resources>
